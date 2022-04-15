@@ -103,7 +103,13 @@
         this.up.removeFile(file);
       },
       beforeUpload(up, file) {
-        up.setOption("multipart_params", {"size":file.size, "md5":file.md5});
+        up.setOption("multipart_params", {
+          appId: "1",
+          appFileId: file.id,
+          "fileName":file.name,
+          "size":file.size,
+          "md5":file.md5
+        });
       },
       uploadStart() {
         let count = 0, size = this.files.length;
