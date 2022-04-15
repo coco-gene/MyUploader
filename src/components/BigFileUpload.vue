@@ -100,7 +100,7 @@
         this.up.removeFile(file);
       },
       beforeUpload(up, file) {
-        up.setOption("multipart_params", {"size":file.size,"md5":file.md5});
+        up.setOption("multipart_params", {"size":file.size, "md5":file.md5});
       }
     }
   }
