@@ -5,6 +5,8 @@
       browse_button="browse_button"
       :url="server_config.url+'/File/'"
       :filters="{prevent_duplicates:true}"
+      :FilesAdded="filesAdded"
+      :BeforeUpload="beforeUpload"
       @inputUploader="inputUploader"
     />
     <el-tag type="warning">不允许选取重复文件</el-tag>
@@ -50,6 +52,7 @@
 
 <script>
   import Uploader from './Uploader'
+  import FileMd5 from "../models/file-md5";
   export default {
     name: "MultiFileUpload",
     data() {
@@ -87,6 +90,22 @@
       deleteFile(id) {
         let file = this.up.getFile(id);
         this.up.removeFile(file);
+      },
+      filesAdded(up, files) {
+        files.forEach((f) => {
+          FileMd5(f.getNative(), (e, md5) => {
+            f["md5"] = md5;
+          });
+        });
+      },
+      beforeUpload(up, file) {
+        up.setOption("multipart_params", {
+          appId: "1",
+          appFileId: file.id,
+          "fileName":file.name,
+          "size":file.size,
+          "md5":file.md5
+        });
       }
     },
     components: {
