@@ -4,6 +4,7 @@
       browse_button="browse_button"
       :url="server_config.url+'/File/'"
       :FilesAdded="filesAdded"
+      :BeforeUpload="beforeUpload"
       @inputUploader="inputUploader"
     />
     <el-button id="browse_button" type="primary">选择图片</el-button>
@@ -35,6 +36,7 @@
 <script>
   import Uploader from './Uploader'
   import FileUrl from '../models/file-url'
+  import FileMd5 from "../models/file-md5";
 
   export default {
     name: "PictureUpload",
@@ -70,11 +72,23 @@
             f.imgsrc = imgsrc;
             this.changed = !this.changed;
           });
+          FileMd5(f.getNative(), (e, md5) => {
+            f["md5"] = md5;
+          });
         });
       },
       deleteFile(index,file) {
         this.images.splice(index,1);
         this.up.removeFile(file);
+      },
+      beforeUpload(up, file) {
+        up.setOption("multipart_params", {
+          appId: "1",
+          appFileId: file.id,
+          "fileName":file.name,
+          "size":file.size,
+          "md5":file.md5
+        });
       }
     }
   }
