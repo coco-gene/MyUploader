@@ -68,6 +68,7 @@
         }
       },
       inputUploader(up) {
+        console.log(up);
         this.up = up;
         this.files = up.files;
       },
