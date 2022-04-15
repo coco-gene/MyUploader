@@ -5,6 +5,7 @@
         :url="server_config.url+'/File/'"
         :multi_selection="false"
         :FilesAdded="filesAdded"
+        :BeforeUpload="beforeUpload"
         :filters="{
           mime_types : [
             { title : 'Image files', extensions : 'jpg,gif,png' },
@@ -29,6 +30,7 @@
 
 <script>
   import Uploader from './Uploader'
+  import FileMd5 from "../models/file-md5";
   export default {
     name: "SingleFileUpload",
     data() {
@@ -66,6 +68,11 @@
         if (up.files.length > 1) {
           up.removeFile(up.files[0])
         }
+        files.forEach((f) => {
+          FileMd5(f.getNative(), (e, md5) => {
+            f["md5"] = md5;
+          });
+        });
       },
       inputUploader(up) {
         this.up = up;
@@ -74,6 +81,15 @@
       uploadStart() {
         this.dialogTableVisible = true;
         this.up.start();
+      },
+      beforeUpload(up, file) {
+        up.setOption("multipart_params", {
+          appId: "1",
+          appFileId: file.id,
+          "fileName":file.name,
+          "size":file.size,
+          "md5":file.md5
+        });
       }
     },
     components: {
