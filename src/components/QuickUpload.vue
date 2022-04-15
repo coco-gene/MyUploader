@@ -71,7 +71,9 @@
           this.tableData = [];
           this.files.forEach((e) => {
             this.tableData.push({
-              name: e.name,
+              appId: "1",
+              appFileId: e.id,
+              fileName: e.name,
               size: e.size,
               status: e.status,
               id: e.id,
@@ -107,7 +109,7 @@
         let count = 0, size = this.files.length;
         this.files.forEach((e) => {
           if (e.status == 1) {
-            this.$http.get(this.server_config.url+'/QuickUpload/?md5='+e.md5)
+            this.$http.get(this.server_config.url+'/QuickUpload/?md5=' + e.md5)
               .then((response) => {
                 count += 1;
                 console.log(count);

@@ -70,7 +70,9 @@
           this.tableData = [];
           this.files.forEach((e) => {
             this.tableData.push({
-              name: e.name,
+              appId: "1",
+              appFileId: e.id,
+              fileName: e.name,
               size: e.size,
               status: e.status,
               id: e.id,
